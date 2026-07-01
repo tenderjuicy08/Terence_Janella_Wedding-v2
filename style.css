@@ -74,54 +74,53 @@ button:hover,
 
 .hero-card{
   position:relative;
-  width:min(100%, 540px);
+  width:min(100%, 620px);
   min-height:calc(100svh - 20px);
   overflow:hidden;
   border-radius:0 0 18px 18px;
   background:
-    linear-gradient(rgba(250,247,240,.24), rgba(250,247,240,.52)),
+    linear-gradient(rgba(250,247,240,.12), rgba(250,247,240,.38)),
     url("images/hero-bg.jpg") center center / cover no-repeat;
   box-shadow:0 18px 44px rgba(0,0,0,.12);
   isolation:isolate;
 }
 
-.hero-card::after{
-  content:"";
-  position:absolute;
-  inset:-20px;
-  background:url("images/save-the-date-photo.jpg") center top / cover no-repeat;
-  filter:blur(24px);
-  transform:scale(1.08);
-  opacity:.42;
-  z-index:0;
+/* IMPORTANT: no pseudo-element and no photo background layer. */
+.hero-card::before{
+  content:none;
 }
 
+/* Transparent PNG cutout only. */
 .hero-photo{
   position:absolute;
-  inset:0;
+  left:50%;
+  bottom:0;
   z-index:1;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center top;
-  transform:scale(1.015);
-  filter:brightness(1.02);
-  -webkit-mask-image:radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,.98) 62%, rgba(0,0,0,.90) 72%, rgba(0,0,0,.62) 84%, transparent 100%);
-  mask-image:radial-gradient(ellipse at center, rgba(0,0,0,1) 50%, rgba(0,0,0,.98) 62%, rgba(0,0,0,.90) 72%, rgba(0,0,0,.62) 84%, transparent 100%);
+  display:block;
+  width:min(94%, 560px);
+  max-width:94%;
+  height:auto;
+  max-height:88%;
+  transform:translateX(-50%);
+  object-fit:contain;
+  object-position:center bottom;
+  background:transparent;
+  filter:drop-shadow(0 10px 24px rgba(0,0,0,.10));
 }
 
 .hero-photo-overlay{
   position:absolute;
   inset:0;
   z-index:2;
+  pointer-events:none;
   background:
     linear-gradient(
       to bottom,
-      rgba(255,255,255,.12) 0%,
-      rgba(255,255,255,.05) 30%,
-      rgba(255,255,255,.22) 60%,
-      rgba(255,255,255,.72) 82%,
-      rgba(255,255,255,.95) 100%
+      rgba(255,255,255,.02) 0%,
+      rgba(255,255,255,0) 38%,
+      rgba(255,255,255,.06) 62%,
+      rgba(255,255,255,.48) 85%,
+      rgba(255,255,255,.84) 100%
     );
 }
 
@@ -167,30 +166,53 @@ button:hover,
 
 .save-the-date{
   position:relative;
-  width:100%;
-  margin:0 auto 12px;
-  text-align:center;
-  line-height:.8;
+  display:grid;
+  grid-template-columns:42% 58%;
+  grid-template-rows:auto auto;
+  align-items:end;
+  width:min(100%, 500px);
+  margin:0 auto 14px;
+  line-height:.76;
+  text-align:left;
   text-shadow:0 1px 0 rgba(255,255,255,.35);
 }
 
-.save-word,
-.date-word{
-  display:inline-block;
-  font-size:clamp(52px, 16vw, 84px);
+.save-word{
+  grid-column:1 / -1;
+  grid-row:1;
+  justify-self:start;
+  margin-left:7%;
+  font-size:clamp(48px, 10vw, 74px);
   font-weight:400;
-  letter-spacing:-3px;
+  letter-spacing:-2px;
 }
 
 .the-word{
-  position:absolute;
-  left:50%;
-  top:57%;
-  transform:translate(-50%, -50%) rotate(-7deg);
+  grid-column:1;
+  grid-row:2;
+  position:static;
+  justify-self:end;
+  align-self:center;
+  margin-top:-12px;
+  margin-right:-10px;
+  transform:none;
   font-family:"Edwardian Script ITC", "Brush Script MT", "Segoe Script", cursive;
-  font-size:clamp(64px, 20vw, 108px);
+  font-size:clamp(54px, 11vw, 82px);
   font-weight:400;
-  line-height:1;
+  line-height:.8;
+  white-space:nowrap;
+}
+
+.date-word{
+  grid-column:2;
+  grid-row:2;
+  justify-self:start;
+  align-self:end;
+  margin-left:10px;
+  font-size:clamp(48px, 10vw, 74px);
+  font-weight:400;
+  letter-spacing:-2px;
+  white-space:nowrap;
 }
 
 .rings{
@@ -661,9 +683,6 @@ textarea{
 
   .hero{
     padding:0;
-    background:
-      linear-gradient(rgba(250,247,240,.84), rgba(250,247,240,.88)),
-      url("images/hero-bg.jpg") center center / cover no-repeat;
   }
 
   .hero-card{
@@ -673,17 +692,24 @@ textarea{
     box-shadow:none;
   }
 
+  .hero-photo{
+    width:96%;
+    max-width:96%;
+    max-height:84%;
+  }
+
   .hero-content{
+    min-height:100svh;
     padding:102px 16px 28px;
   }
 
   .save-word,
   .date-word{
-    font-size:clamp(50px, 16vw, 76px);
+    font-size:clamp(44px, 12vw, 68px);
   }
 
   .the-word{
-    font-size:clamp(60px, 21vw, 96px);
+    font-size:clamp(50px, 13vw, 76px);
   }
 
   .hero-date{
@@ -753,10 +779,15 @@ textarea{
   }
 }
 
-/* SMALL MOBILE */
 @media (max-width:480px){
   .hero-content{
     padding:96px 14px 24px;
+  }
+
+  .hero-photo{
+    width:100%;
+    max-width:100%;
+    max-height:82%;
   }
 
   .hero-top-rings{
@@ -765,22 +796,28 @@ textarea{
     transform:scale(.92);
   }
 
+  .save-the-date{
+    grid-template-columns:40% 60%;
+    width:100%;
+  }
+
   .save-word,
   .date-word{
-    font-size:47px;
-    letter-spacing:-2px;
+    font-size:42px;
+    letter-spacing:-1.5px;
+  }
+
+  .save-word{
+    margin-left:8%;
   }
 
   .the-word{
-    font-size:74px;
+    font-size:50px;
+    margin-right:-6px;
   }
 
-  .rings{
-    margin-bottom:10px;
-  }
-
-  .hero-date{
-    letter-spacing:.6px;
+  .date-word{
+    margin-left:7px;
   }
 
   .countdown-value > span:first-child,
